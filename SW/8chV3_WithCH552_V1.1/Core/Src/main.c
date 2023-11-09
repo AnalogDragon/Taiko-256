@@ -115,7 +115,7 @@ uint16_t P2_DR = 0;
 uint16_t P2_KR = 0;
 
 uint8_t UnknowCMD = 0;
-uint8_t JVS_OK = 0;
+uint16_t JVS_OK = 0;
 
 
 //
@@ -1057,7 +1057,7 @@ void Get246Data(void)
 		}
 		if(SUM == SciBuffer[SciLength-1]){
 			SciCount++;
-			JVS_OK = 250;
+			JVS_OK = 500;
 			
 			if(SciBuffer[1] == 0xFF){//	BROADCAST 
 				switch(SciBuffer[3]){
@@ -1240,7 +1240,7 @@ int main(void)
 		UsartTask();
     
     time++;
-		if(time >= 10000){
+		if(time >= 1000){
       time = 0;
 			checkSet();
 		}
@@ -1249,15 +1249,25 @@ int main(void)
 		}
 		
 		if(SystemError){
-			HAL_GPIO_WritePin(LED_STA_GPIO_Port,LED_STA_Pin,(GPIO_PinState)(time < 2));
+			if(time % 20 == 0)
+				HAL_GPIO_TogglePin(LED_STA_GPIO_Port,LED_STA_Pin);
 		}
 		else if(UnknowCMD){
-			if(time<500 && time % 10 == 0)
-				HAL_GPIO_TogglePin(LED_STA_GPIO_Port,LED_STA_Pin);
+			if(time < 500){
+				if(time % 20 == 0)
+					HAL_GPIO_TogglePin(LED_STA_GPIO_Port,LED_STA_Pin);
+			}
+			else
+        HAL_GPIO_WritePin(LED_STA_GPIO_Port,LED_STA_Pin,GPIO_PIN_RESET);
 		}
 		else if(!JVS_OK && SET_4){
-			if(time % 10 == 0)
-				HAL_GPIO_TogglePin(LED_STA_GPIO_Port,LED_STA_Pin);
+			if(time < 100){
+				if(time % 20 == 0)
+					HAL_GPIO_TogglePin(LED_STA_GPIO_Port,LED_STA_Pin);
+			}
+			else
+        HAL_GPIO_WritePin(LED_STA_GPIO_Port,LED_STA_Pin,GPIO_PIN_RESET);
+				
 		}
 		else if(POWER_ON_EN){
 			if((time % 100) == 0)
