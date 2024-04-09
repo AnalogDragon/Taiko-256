@@ -121,14 +121,14 @@ uint16_t JVS_OK = 0;
 //
 void GPIO_Output(uint8_t IO, uint8_t state){
   switch(IO){
-    case 0:if(state)OUT1_GPIO_Port->BSRR = (uint32_t)OUT1_Pin;else OUT1_GPIO_Port->BRR = (uint32_t)OUT1_Pin;break;
-    case 1:if(state)OUT2_GPIO_Port->BSRR = (uint32_t)OUT2_Pin;else OUT2_GPIO_Port->BRR = (uint32_t)OUT2_Pin;break;
-    case 2:if(state)OUT3_GPIO_Port->BSRR = (uint32_t)OUT3_Pin;else OUT3_GPIO_Port->BRR = (uint32_t)OUT3_Pin;break;
-    case 3:if(state)OUT4_GPIO_Port->BSRR = (uint32_t)OUT4_Pin;else OUT4_GPIO_Port->BRR = (uint32_t)OUT4_Pin;break;
-    case 4:if(state)OUT5_GPIO_Port->BSRR = (uint32_t)OUT5_Pin;else OUT5_GPIO_Port->BRR = (uint32_t)OUT5_Pin;break;
-    case 5:if(state)OUT6_GPIO_Port->BSRR = (uint32_t)OUT6_Pin;else OUT6_GPIO_Port->BRR = (uint32_t)OUT6_Pin;break;
-    case 6:if(state)OUT7_GPIO_Port->BSRR = (uint32_t)OUT7_Pin;else OUT7_GPIO_Port->BRR = (uint32_t)OUT7_Pin;break;
-    case 7:if(state)OUT8_GPIO_Port->BSRR = (uint32_t)OUT8_Pin;else OUT8_GPIO_Port->BRR = (uint32_t)OUT8_Pin;break;
+    case 3:if(state)OUT1_GPIO_Port->BSRR = (uint32_t)OUT1_Pin;else OUT1_GPIO_Port->BRR = (uint32_t)OUT1_Pin;break;
+    case 2:if(state)OUT2_GPIO_Port->BSRR = (uint32_t)OUT2_Pin;else OUT2_GPIO_Port->BRR = (uint32_t)OUT2_Pin;break;
+    case 1:if(state)OUT3_GPIO_Port->BSRR = (uint32_t)OUT3_Pin;else OUT3_GPIO_Port->BRR = (uint32_t)OUT3_Pin;break;
+    case 0:if(state)OUT4_GPIO_Port->BSRR = (uint32_t)OUT4_Pin;else OUT4_GPIO_Port->BRR = (uint32_t)OUT4_Pin;break;
+    case 7:if(state)OUT5_GPIO_Port->BSRR = (uint32_t)OUT5_Pin;else OUT5_GPIO_Port->BRR = (uint32_t)OUT5_Pin;break;
+    case 6:if(state)OUT6_GPIO_Port->BSRR = (uint32_t)OUT6_Pin;else OUT6_GPIO_Port->BRR = (uint32_t)OUT6_Pin;break;
+    case 5:if(state)OUT7_GPIO_Port->BSRR = (uint32_t)OUT7_Pin;else OUT7_GPIO_Port->BRR = (uint32_t)OUT7_Pin;break;
+    case 4:if(state)OUT8_GPIO_Port->BSRR = (uint32_t)OUT8_Pin;else OUT8_GPIO_Port->BRR = (uint32_t)OUT8_Pin;break;
   }
 }
 
@@ -325,25 +325,40 @@ void IO_OutputList(void){
 
 		return;
 	}
- 
-  for(uint8_t i = 0; i < CHANNEL_NUM; i ++){
-    if(O_Buffer & (1 << i)){
+	
+	for(uint8_t i = 0; i < CHANNEL_NUM; i ++){
+		if(O_Buffer & (1 << i)){
 			
-      if(POWER_ON_EN)
+			if(POWER_ON_EN){
         GPIO_Output(i, SystemSet.OutLoLength < O_CountDown[i]);
+				if(flag[i] == 0){
+					flag[i] = 1;
+					switch(i){
+						case 0:P1_KL = 1023;break;
+						case 1:P1_DL = 1023;break;
+						case 2:P1_DR = 1023;break;
+						case 3:P1_KR = 1023;break;
+						case 4:P2_KL = 1023;break;
+						case 5:P2_DL = 1023;break;
+						case 6:P2_DR = 1023;break;
+						case 7:P2_KR = 1023;break;
+					}
+				}
+				else flag[i] = 0xFF;
+			}
 			
-      O_CountDown[i]--;
+			O_CountDown[i]--;
 			
-      if(O_CountDown[i] == 0){
-        O_Buffer &= ~(1 << i);
+			if(O_CountDown[i] == 0){
+				O_Buffer &= ~(1 << i);
 				I_Buffer &= ~(1 << i);
-      }
-    }
-    else{
-      O_CountDown[i] = 0;
-      GPIO_Output(i, 0);
-    }
-  }
+			}
+		}
+		else{
+			O_CountDown[i] = 0;
+			flag[i] = 0;
+		}
+	}
 }
 
 

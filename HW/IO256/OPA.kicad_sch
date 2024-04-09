@@ -4,6 +4,13 @@
 
   (paper "A4")
 
+  (title_block
+    (title "System 256 REFUTA")
+    (date "2023-10-27")
+    (rev "V13")
+    (company "Analog Dragon")
+  )
+
   (lib_symbols
     (symbol "Amplifier_Operational:TL084" (pin_names (offset 0.127)) (in_bom yes) (on_board yes)
       (property "Reference" "U" (at 0 5.08 0)

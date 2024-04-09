@@ -217,13 +217,21 @@ void USART1_IRQHandler(void)
 		Get246Data();
 	}
 	
-	if(USART1->ISR & (USART_ISR_ORE | USART_ISR_NE)){
+	if(USART1->ISR & (USART_ISR_ORE | USART_ISR_NE | USART_ISR_FE)){
 		if(USART1->ISR & USART_ISR_ORE){
 			USART1->ICR = UART_CLEAR_OREF;
 		}
 
 		if(USART1->ISR & USART_ISR_NE){
 			USART1->ICR = UART_CLEAR_NEF;
+		}
+
+		if(USART1->ISR & USART_ISR_FE){
+			USART1->ICR = UART_CLEAR_FEF;
+		}
+
+		if(USART1->ISR & USART_ISR_FE){
+			USART1->ICR = UART_CLEAR_FEF;
 		}
 		SciLength = 0;
 		SciErrTime++;
