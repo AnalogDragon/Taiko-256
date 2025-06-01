@@ -10,7 +10,7 @@ Alternatively, this PCB can also be used to replace only the SIF PCB and FUTA PC
 ![PCB](img/pcb1.png)  
 
 **Labels in the image:**  
-- **A**: Taiko sensor interface. Channels 1~4 are for Player 1, and channels 5~8 are for Player 2. Requires connection to a Taiko with vibration sensors (the pins near the board edge are for grounding).  
+- **A**: Taiko sensor interface. Channels 1\~4 are for Player 1, and channels 5\~8 are for Player 2. Requires connection to a Taiko with vibration sensors (the pins near the board edge are for grounding).  
 - **B**: Taiko sensor input swap matrix. Jumpers can be placed in different positions to map inputs to any channel.  
 - **C**: Interface for connecting to MINI-JV (can be left unconnected).  
 - **D**: When connecting to MINI-JV, determines whether drum signals come from the MCU or SIF (can be left unconnected).  
