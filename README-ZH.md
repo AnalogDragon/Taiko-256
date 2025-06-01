@@ -29,5 +29,6 @@
   
   
 ### 实物图： 
-![PCB-Photo](img/pcb2.JPG)
+![PCB-Photo](img/pcb2.JPG)  
+![Photo](img/img2.jpg)  
   

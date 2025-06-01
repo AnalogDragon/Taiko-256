@@ -29,3 +29,4 @@ Alternatively, this PCB can also be used to replace only the SIF PCB and FUTA PC
 
 ### PCB Image:  
 ![PCB-Photo](img/pcb2.JPG)  
+![Photo](img/img2.jpg)  
